@@ -1,4 +1,5 @@
 library(shiny)
+library(dplyr)
 
 # YOU CAN IGNORE THIS: metadata for when sharing the app on facebook/twitter
 share <- list(
@@ -50,7 +51,8 @@ ui <- fluidPage(
       
       hr(),
       
-           span("Data source:", 
+      
+      span("Data source:", 
            tags$a("OpenDataBC",
                   href = "https://www.opendatabc.ca/dataset/bc-liquor-store-product-price-list-current-prices")),
       br(),
@@ -60,9 +62,9 @@ ui <- fluidPage(
       br(), br(),
       
       em(
-        span("I learned from ", a(href = "http://deanattali.com", "Dean Attali")),
+        span("Created by", a(href = "http://deanattali.com", "Dean Attali")),
         HTML("&bull;"),
-        span("Code", a(href = "https://github.com/daattali/shiny-server/tree/master/bcl", "on my GitHub"))
+        span("Code", a(href = "https://github.com/daattali/shiny-server/tree/master/bcl", "on GitHub"))
       )
     ),
     
@@ -71,6 +73,9 @@ ui <- fluidPage(
       h3(textOutput("summaryText")),
       downloadButton("download", "Download results"),
       br(),
+      #JYL -testing
+         downloadButton("report", "Results"),
+          br(),
       plotOutput("plot"),
       br(), br(),
       #tableOutput("prices")

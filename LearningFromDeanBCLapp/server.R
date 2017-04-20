@@ -5,6 +5,9 @@ library(ggplot2)
 
 
 filename <- file.path("data", "bcl-data.csv")
+plothist <- file.path("results", "histogram.png")
+
+
 bcl <- read.csv(filename, stringsAsFactors = FALSE)
 
 server <- function(input, output, session) {
@@ -47,16 +50,29 @@ server <- function(input, output, session) {
       return(NULL)
     }
     prices
+   
   })
+  
+  
+#  savePlot <- function (){
+#     png(plothist)
+#    ggplot(prices(), aes(Alcohol_Content, fill = Type)) +
+#    geom_histogram(colour = "black") +
+#    theme_classic(20)
+#    dev.off()
+#  }
   
   output$plot <- renderPlot({
     if (is.null(prices())) {
       return(NULL)
     }
     
-    ggplot(prices(), aes(Alcohol_Content, fill = Type)) +
+    p <- ggplot(prices(), aes(Alcohol_Content, fill = Type)) +
       geom_histogram(colour = "black") +
       theme_classic(20)
+    
+  #  ggsave (plothist, p)
+    p
   })
   
   output$prices <- DT::renderDataTable({
@@ -69,6 +85,22 @@ server <- function(input, output, session) {
     },
     content = function(con) {
       write.csv(prices(), con)
+    }
+  )
+
+
+  output$report <- downloadHandler(
+    filename = function() {
+      #"bcl-results.csv"
+      #"anything.png"
+      "anything.pdf"
+    },
+    content = function(con) {
+      write.csv(prices(), con)
+      
+      ggsave (con,  ggplot(prices(), aes(Alcohol_Content, fill = Type)) +
+        geom_histogram(colour = "black") +
+        theme_classic(20))
     }
   )
 }
