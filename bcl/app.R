@@ -35,6 +35,7 @@ if (file.exists(filename)) {
   write.csv(bcl, filename, row.names = FALSE)
 }
 
+
 ui <- fluidPage(
   # Ignore this tags$head section, just adding metadata for facebook/twitter sharing
   tags$head(
@@ -54,6 +55,8 @@ ui <- fluidPage(
     tags$meta(name = "twitter:description", content = share$description),
     tags$meta(name = "twitter:image", content = share$image)
   ),
+  
+  
   titlePanel("BC Liquor Store prices"),
   sidebarLayout(
     sidebarPanel(
@@ -62,25 +65,36 @@ ui <- fluidPage(
       ),
       br(),
       sliderInput("priceInput", "Price", 0, 100, c(25, 40), pre = "$"),
+      
       uiOutput("typeSelectOutput"),
+      
       checkboxInput("filterCountry", "Filter by country", FALSE),
+      
       conditionalPanel(
         condition = "input.filterCountry",
         uiOutput("countrySelectorOutput")
       ),
+      
       hr(),
+      
+      
       span("Data source:", 
         tags$a("OpenDataBC",
              href = "https://www.opendatabc.ca/dataset/bc-liquor-store-product-price-list-current-prices")),
       br(),
+      
       span("Learn how to build this app", a(href = "http://deanattali.com/blog/building-shiny-apps-tutorial/", "with my Shiny tutorial")),
+      
       br(), br(),
+      
       em(
         span("Created by", a(href = "http://deanattali.com", "Dean Attali")),
         HTML("&bull;"),
         span("Code", a(href = "https://github.com/daattali/shiny-server/tree/master/bcl", "on GitHub"))
       )
     ),
+    
+    
     mainPanel(
       h3(textOutput("summaryText")),
       downloadButton("download", "Download results"),
